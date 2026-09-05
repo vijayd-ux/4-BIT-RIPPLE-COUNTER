@@ -30,11 +30,61 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 
 /* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
 
- Developed by: RegisterNumber:
+ Developed by: VIJAY D RegisterNumber: 212225230300
 */
 
+module bit(q, clk, reset);
+
+output [3:0] q;
+input clk, reset;
+
+T_FF tff0(q[0], clk, reset);
+T_FF tff1(q[1], q[0], reset);
+T_FF tff2(q[2], q[1], reset);
+T_FF tff3(q[3], q[2], reset);
+
+endmodule
+
+
+module T_FF(q, clk, reset);
+
+output q;
+input clk, reset;
+
+wire d;
+
+D_FF dff0(q, d, clk, reset);
+
+not n1(d, q);
+
+endmodule
+
+
+module D_FF(q, d, clk, reset);
+
+output q;
+input d, clk, reset;
+
+reg q;
+
+always @(negedge clk or posedge reset)
+begin
+    if (reset)
+        q = 1'b0;
+    else
+        q = d;
+end
+
+endmodule
+
 **RTL LOGIC FOR 4 Bit Ripple Counter**
+<img width="1916" height="1078" alt="image" src="https://github.com/user-attachments/assets/7b62af2c-eb44-43b8-8b19-238001c449cc" />
+
 
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
 
+<img width="1308" height="680" alt="image" src="https://github.com/user-attachments/assets/495bb11b-8bff-43c0-b519-521c8509aa6b" />
+
 **RESULTS**
+The functional simulation verified that the 4-bit ripple counter works correctly.Counting Sequence: With every clock pulse, the output increments sequentially in binary from 0000 (0) to 1111 (15).Rollover: After reaching 1111, the counter automatically resets and rolls over back to 0000 on the next clock pulse.
+
